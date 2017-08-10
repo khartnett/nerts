@@ -18,7 +18,9 @@ Hello, This is dog
     // can then insert into the DOM.
     document.body.appendChild(app.view);
 
-    PIXI.loader.add('cardTiles', 'cards.png').load(function(loader, resources) {
+    PIXI.loader.add('cardTiles', 'cards.png').load(setup);
+
+    function setup(loader, resources) {
 
         // cards are 98 px tall, 73 wide
         var texture = PIXI.utils.TextureCache["cards.png"];
@@ -52,13 +54,51 @@ Hello, This is dog
 
         rocket.anchor.x = 0.5;
         rocket.anchor.y = 0.5;
+
+        // enable the bunny to be interactive... this will allow it to respond to mouse and touch events
+        rocket.interactive = true;
+
+        // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
+        rocket.buttonMode = true;
+
+        rocket
+            .on('pointerdown', onDragStart)
+            .on('pointerup', onDragEnd)
+            .on('pointerupoutside', onDragEnd)
+            .on('pointermove', onDragMove);
+
         app.ticker.add(function(delta) {
             // just for fun, let's rotate mr rabbit a little
             // delta is 1 if running at 100% performance
             // creates frame-independent tranformation
-            rocket.rotation += 0.01 * delta;
+            rocket.rotation += -0.01 * delta;
         });
-    });
+
+    }
+
+    function onDragStart(event) {
+        // store a reference to the data
+        // the reason for this is because of multitouch
+        // we want to track the movement of this particular touch
+        this.data = event.data;
+        this.alpha = 0.5;
+        this.dragging = true;
+    }
+
+    function onDragEnd() {
+        this.alpha = 1;
+        this.dragging = false;
+        // set the interaction data to null
+        this.data = null;
+    }
+
+    function onDragMove() {
+        if (this.dragging) {
+            var newPosition = this.data.getLocalPosition(this.parent);
+            this.x = newPosition.x;
+            this.y = newPosition.y;
+        }
+    }
 
     // load the texture we need
 //    PIXI.loader.add('bunny', 'bunny.png').load(function(loader, resources) {
