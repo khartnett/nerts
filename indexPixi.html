@@ -51,6 +51,8 @@ Hello, This is dog
 
     PIXI.loader.add('cardTiles', 'cards.png').load(setup);
 
+    var card;
+
     function setup(loader, resources) {
 
         // cards are 98 px tall, 73 wide
@@ -70,29 +72,29 @@ Hello, This is dog
         texture.frame = rectangle;
 
         //Create the sprite from the texture
-        var rocket = new PIXI.Sprite(texture);
+        card = new PIXI.Sprite(texture);
 
-        //Position the rocket sprite on the canvas
-        rocket.x = 88;
-        rocket.y = 148;
+        //Position the card sprite on the canvas
+        card.x = 88;
+        card.y = 148;
 
-        //Add the rocket to the stage
-        app.stage.addChild(rocket);
+        //Add the card to the stage
+        app.stage.addChild(card);
 
         //Render the stage
 //        app.renderer.render(stage);
 
 
-        rocket.anchor.x = 0.5;
-        rocket.anchor.y = 0.5;
+        card.anchor.x = 0.5;
+        card.anchor.y = 0.5;
 
         // enable the bunny to be interactive... this will allow it to respond to mouse and touch events
-        rocket.interactive = true;
+        card.interactive = true;
 
         // this button mode will mean the hand cursor appears when you roll over the bunny with your mouse
-        rocket.buttonMode = true;
+        card.buttonMode = true;
 
-        rocket
+        card
             .on('pointerdown', onDragStart)
             .on('pointerup', onDragEnd)
             .on('pointerupoutside', onDragEnd)
@@ -102,7 +104,7 @@ Hello, This is dog
             // just for fun, let's rotate mr rabbit a little
             // delta is 1 if running at 100% performance
             // creates frame-independent tranformation
-            rocket.rotation += -0.01 * delta;
+//            card.rotation += -0.01 * delta;
         });
 
     }
@@ -114,6 +116,7 @@ Hello, This is dog
         this.data = event.data;
         this.alpha = 0.5;
         this.dragging = true;
+        card.rotation = -0.4;
     }
 
     function onDragEnd() {
@@ -122,7 +125,8 @@ Hello, This is dog
         // set the interaction data to null
         this.data = null;
         var socket = io();
-        socket.emit('chat message', 'The Card was dropped');
+        socket.emit('chat message', 'The Card was dropped at x:' + this.x + ' y:' + this.y);
+        card.rotation = 0;
     }
 
     function onDragMove() {
