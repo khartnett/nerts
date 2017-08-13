@@ -65,7 +65,7 @@ onDragMove = ->
 
 $ ->
   socket = io()
-  $('form').submit ->
+  $('form#chat').submit ->
     socket.emit 'chat message', $('#m').val()
     $('#m').val ''
     false
@@ -73,7 +73,14 @@ $ ->
     $('#messages').append $('<li>').text(msg)
     window.scrollTo 0, document.body.scrollHeight
     return
+  $('form#sign_in_form').submit ->
+    console.log('here')
+    socket.emit 'sign in', JSON.stringify( { 'name': $('#name').val(), 'avitar': $('#name').val() } );
+    $('#name').val ''
+    false
   return
+
+
 # The application will create a renderer using WebGL, if possible,
 # with a fallback to a canvas render. It will also setup the ticker
 # and the root stage PIXI.Container.

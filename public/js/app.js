@@ -1,1 +1,83 @@
-var app,card,onDragEnd,onDragMove,onDragStart,setup;setup=function(a,t){var n,o,e,i,r,d,n,s;s=PIXI.utils.TextureCache["cards.png"],n=new PIXI.Rectangle(192,128,64,64),d=73,i=98,e=11,r=3,n=new PIXI.Rectangle(e*d,r*i,d,i),s.frame=n,o=new PIXI.Sprite(s),o.x=88,o.y=148,app.stage.addChild(o),o.anchor.x=.5,o.anchor.y=.5,o.interactive=!0,o.buttonMode=!0,o.on("pointerdown",onDragStart).on("pointerup",onDragEnd).on("pointerupoutside",onDragEnd).on("pointermove",onDragMove),app.ticker.add(function(a){})},onDragStart=function(a){this.data=a.data,this.alpha=.5,this.dragging=!0,card.rotation=-.4},onDragEnd=function(){var a;this.alpha=1,this.dragging=!1,this.data=null,a=io(),a.emit("chat message","The Card was dropped at x:"+this.x+" y:"+this.y),card.rotation=0},onDragMove=function(){var a;this.dragging&&(a=this.data.getLocalPosition(this.parent),this.x=a.x,this.y=a.y)},$(function(){var a;a=io(),$("form").submit(function(){return a.emit("chat message",$("#m").val()),$("#m").val(""),!1}),a.on("chat message",function(a){$("#messages").append($("<li>").text(a)),window.scrollTo(0,document.body.scrollHeight)})}),app=new PIXI.Application(800,600,{backgroundColor:1087931}),document.body.appendChild(app.view),PIXI.loader.add("cardTiles","cards.png").load(setup),card=void 0;
+var app, card, onDragEnd, onDragMove, onDragStart, setup;
+
+setup = function(loader, resources) {
+  var rectangle;
+  var card, cardFace, cardH, cardSuit, cardW, rectangle, texture;
+  texture = PIXI.utils.TextureCache['cards.png'];
+  rectangle = new PIXI.Rectangle(192, 128, 64, 64);
+  cardW = 73;
+  cardH = 98;
+  cardFace = 11;
+  cardSuit = 3;
+  rectangle = new PIXI.Rectangle(cardFace * cardW, cardSuit * cardH, cardW, cardH);
+  texture.frame = rectangle;
+  card = new PIXI.Sprite(texture);
+  card.x = 88;
+  card.y = 148;
+  app.stage.addChild(card);
+  card.anchor.x = 0.5;
+  card.anchor.y = 0.5;
+  card.interactive = true;
+  card.buttonMode = true;
+  card.on('pointerdown', onDragStart).on('pointerup', onDragEnd).on('pointerupoutside', onDragEnd).on('pointermove', onDragMove);
+  app.ticker.add(function(delta) {});
+};
+
+onDragStart = function(event) {
+  this.data = event.data;
+  this.alpha = 0.5;
+  this.dragging = true;
+  card.rotation = -0.4;
+};
+
+onDragEnd = function() {
+  var socket;
+  this.alpha = 1;
+  this.dragging = false;
+  this.data = null;
+  socket = io();
+  socket.emit('chat message', 'The Card was dropped at x:' + this.x + ' y:' + this.y);
+  card.rotation = 0;
+};
+
+onDragMove = function() {
+  var newPosition;
+  if (this.dragging) {
+    newPosition = this.data.getLocalPosition(this.parent);
+    this.x = newPosition.x;
+    this.y = newPosition.y;
+  }
+};
+
+$(function() {
+  var socket;
+  socket = io();
+  $('form#chat').submit(function() {
+    socket.emit('chat message', $('#m').val());
+    $('#m').val('');
+    return false;
+  });
+  socket.on('chat message', function(msg) {
+    $('#messages').append($('<li>').text(msg));
+    window.scrollTo(0, document.body.scrollHeight);
+  });
+  $('form#sign_in_form').submit(function() {
+    console.log('here');
+    socket.emit('sign in', JSON.stringify({
+      'name': $('#name').val(),
+      'avitar': $('#name').val()
+    }));
+    $('#name').val('');
+    return false;
+  });
+});
+
+app = new PIXI.Application(800, 600, {
+  backgroundColor: 0x1099bb
+});
+
+document.body.appendChild(app.view);
+
+PIXI.loader.add('cardTiles', 'cards.png').load(setup);
+
+card = void 0;

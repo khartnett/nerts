@@ -16,7 +16,7 @@ gulp.task('compile-script', function () {
         .pipe(plumber())
         .pipe(include())
         .pipe(coffee({bare: true}).on('error', gutil.log))
-        .pipe(uglify())
+        // .pipe(uglify())
         .pipe(gulp.dest('./public/js'))
     ;
 });
