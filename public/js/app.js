@@ -62,12 +62,11 @@ $(function() {
     window.scrollTo(0, document.body.scrollHeight);
   });
   $('form#sign_in_form').submit(function() {
-    console.log('here');
     socket.emit('sign in', JSON.stringify({
       'name': $('#name').val(),
-      'avitar': $('#name').val()
+      'avitar': $('#avitar').val()
     }));
-    $('#name').val('');
+    $('#name').val('---');
     return false;
   });
 });

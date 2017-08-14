@@ -74,9 +74,8 @@ $ ->
     window.scrollTo 0, document.body.scrollHeight
     return
   $('form#sign_in_form').submit ->
-    console.log('here')
-    socket.emit 'sign in', JSON.stringify( { 'name': $('#name').val(), 'avitar': $('#name').val() } );
-    $('#name').val ''
+    socket.emit 'sign in', JSON.stringify( { 'name': $('#name').val(), 'avitar': $('#avitar').val() } );
+    $('#name').val '---'
     false
   return
 

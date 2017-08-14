@@ -27,7 +27,7 @@ io.on('connection', function(socket){
         users.push( data)
         io.emit('chat message', JSON.stringify(users) + ' are the users');
 //        io.to(socket.id).emit('thanks for joining ', socket.id);
-        io.to(socket.id).emit('chat message', 'thanks for joining '+ socket.id);
+        io.to(socket.id).emit('chat message', 'thanks for joining '+ socket.id + ' ya jerk');
     });
 });
 
