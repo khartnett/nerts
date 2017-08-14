@@ -24,7 +24,7 @@ io.on('connection', function(socket){
     socket.on('sign in', function(msg){
         var data = JSON.parse(msg);
         data.socket_id = socket.id;
-        users.push( data)
+        users.push( data);
         io.emit('chat message', JSON.stringify(users) + ' are the users');
 //        io.to(socket.id).emit('thanks for joining ', socket.id);
         io.to(socket.id).emit('chat message', 'thanks for joining '+ socket.id + ' ya jerk');

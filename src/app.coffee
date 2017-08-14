@@ -75,7 +75,7 @@ $ ->
     return
   $('form#sign_in_form').submit ->
     socket.emit 'sign in', JSON.stringify( { 'name': $('#name').val(), 'avitar': $('#avitar').val() } );
-    $('#name').val '---'
+    $('#name').val ''
     false
   return
 

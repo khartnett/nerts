@@ -66,7 +66,7 @@ $(function() {
       'name': $('#name').val(),
       'avitar': $('#avitar').val()
     }));
-    $('#name').val('---');
+    $('#name').val('');
     return false;
   });
 });

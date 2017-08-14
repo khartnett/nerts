@@ -14,7 +14,7 @@ var
 
 gulp.task('server', function() {
     if (node) node.kill()
-    node = spawn('node', ['index.js'], {stdio: 'inherit'})
+    node = spawn('node', ['server.js'], {stdio: 'inherit'})
     node.on('close', function (code) {
         if (code === 8) {
             gulp.log('Error detected, waiting for changes...');
@@ -33,7 +33,7 @@ gulp.task('compile-script', function () {
 });
 gulp.task('watch', function () {
     gulp.watch('./src/*.coffee', ['compile-script']);
-    gulp.watch('./index.js', ['server']);
+    gulp.watch('./server.js', ['server']);
 });
 
 gulp.task('default', ['server', 'compile-script', 'watch']);
