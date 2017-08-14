@@ -65,7 +65,10 @@ $(function() {
     socket.emit('sign in', JSON.stringify({
       'name': $('#name').val(),
       'avitar': $('#avitar').val()
-    }));
+    }), function(id, users) {
+      console.log('you are id' + id);
+      return console.dir(users);
+    });
     $('#name').val('');
     return false;
   });
